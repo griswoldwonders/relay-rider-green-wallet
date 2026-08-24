@@ -1,0 +1,169 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  --success: #1f8a4c;
+  --danger: #b3261e;
+  --accent: #23527a;
+  --warning: #a3660c;
+  --neutral: #556;
+}
+
+body {
+  margin: 0;
+  background: #f6f8f7;
+  color: #1c2b24;
+}
+
+.green-wallet-app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.gw-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  background: #ffffff;
+  border: 1px solid #dbe4de;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.gw-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
+}
+
+.gw-header p {
+  margin: 0;
+  color: #47564d;
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+.gw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.gw-card {
+  background: #ffffff;
+  border: 1px solid #dbe4de;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+}
+
+.gw-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.gw-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.gw-panel {
+  background: #ffffff;
+  border: 1px solid #dbe4de;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+}
+
+.gw-panel h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.gw-panel p {
+  margin: 0 0 1rem;
+  color: #47564d;
+  font-size: 0.92rem;
+}
+
+.gw-form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.gw-form-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  flex: 1;
+  min-width: 220px;
+}
+
+.gw-form-row select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #c3cfc8;
+  font: inherit;
+}
+
+.gw-primary-button {
+  background: #1f8a4c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.gw-primary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.gw-secondary-button {
+  background: #eef3f0;
+  border: 1px solid #c3cfc8;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.gw-review-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #eef1ef;
+  gap: 1rem;
+}
+
+.gw-review-row small {
+  display: block;
+  color: #6b7a71;
+}
+
+.tag {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.tag-neutral { background: #eef1ef; color: var(--neutral); }
+.tag-success { background: #e2f3e8; color: var(--success); }
+.tag-danger { background: #fbe7e5; color: var(--danger); }
+.tag-accent { background: #e3edf4; color: var(--accent); }
+.tag-warning { background: #fbf0dc; color: var(--warning); }

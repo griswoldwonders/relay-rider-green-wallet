@@ -51,7 +51,7 @@ export default function App() {
             system.
           </p>
         </div>
-        <Tag tone="warning">Prototype · For pilot review only</Tag>
+        <span className="pill-badge">Prototype · For pilot review only</span>
       </header>
 
       <section>

@@ -42,6 +42,7 @@ export default function App() {
     <div className="green-wallet-app">
       <header className="gw-header">
         <div>
+          <span className="gw-eyebrow">Relay Rider · Program Incentive</span>
           <h1>Green Wallet · EV Charge Credit</h1>
           <p>
             Participants earn EV Charge Credit from the sponsoring institution&rsquo;s program budget and redeem it
@@ -53,28 +54,42 @@ export default function App() {
         <Tag tone="warning">Prototype · For pilot review only</Tag>
       </header>
 
-      <section className="gw-grid">
-        {participantIds.map((participantId) => {
-          const participantCredits = credits.filter((c) => c.participantId === participantId);
-          const balance = walletBalance(credits, participantId);
-          const displayName = participantCredits[0]?.participantName ?? participantId;
-          return (
-            <article className="gw-card" key={participantId}>
-              <div className="gw-card-head">
-                <span>{displayName}</span>
-                <strong>{balance} kWh credit balance</strong>
-              </div>
-              <ul>
-                {participantCredits.map((credit) => (
-                  <li key={credit.id}>
-                    {credit.amountUnits} {credit.unitLabel} · <Tag tone={statusTone(credit.status)}>{credit.status}</Tag>
-                    {credit.chargingHubId && ` · ${hubsById[credit.chargingHubId]?.name ?? credit.chargingHubId}`}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          );
-        })}
+      <section>
+        <div className="gw-section-label">
+          <h2>Participant balances</h2>
+          <span>{participantIds.length} participants</span>
+        </div>
+        <div className="gw-grid">
+          {participantIds.map((participantId) => {
+            const participantCredits = credits.filter((c) => c.participantId === participantId);
+            const balance = walletBalance(credits, participantId);
+            const displayName = participantCredits[0]?.participantName ?? participantId;
+            return (
+              <article className="gw-card" key={participantId}>
+                <div className="gw-card-head">
+                  <span>{displayName}</span>
+                  <span className="gw-balance">
+                    {balance}
+                    <small>kWh credit</small>
+                  </span>
+                </div>
+                <ul>
+                  {participantCredits.map((credit) => (
+                    <li className="gw-credit-row" key={credit.id}>
+                      <span className="gw-credit-amount">
+                        {credit.amountUnits} {credit.unitLabel}
+                        {credit.chargingHubId && (
+                          <span className="gw-credit-hub"> · {hubsById[credit.chargingHubId]?.name ?? credit.chargingHubId}</span>
+                        )}
+                      </span>
+                      <Tag tone={statusTone(credit.status)}>{credit.status}</Tag>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            );
+          })}
+        </div>
       </section>
 
       <section className="gw-panel">
@@ -115,42 +130,53 @@ export default function App() {
       </section>
 
       <section className="gw-panel">
-        <h2>Administrative review queue</h2>
+        <div className="gw-section-label">
+          <h2>Administrative review queue</h2>
+          <span>{pendingReview.length} pending</span>
+        </div>
         <p>Approve or deny pending Charging Hub redemption requests.</p>
         {pendingReview.length ? (
           pendingReview.map((credit) => (
             <div className="gw-review-row" key={credit.id}>
-              <span>
+              <div className="gw-review-main">
                 <strong>
                   {credit.participantName} · {credit.amountUnits} {credit.unitLabel}
                 </strong>
                 <small>Requested hub: {hubsById[credit.chargingHubId]?.name ?? credit.chargingHubId}</small>
-              </span>
-              <div>
-                <button className="gw-secondary-button" onClick={() => decideRedemption(credit.id, true)}>
+              </div>
+              <div className="gw-review-actions">
+                <button className="gw-secondary-button approve" onClick={() => decideRedemption(credit.id, true)}>
                   Approve
                 </button>
-                <button className="gw-secondary-button" onClick={() => decideRedemption(credit.id, false)}>
+                <button className="gw-secondary-button deny" onClick={() => decideRedemption(credit.id, false)}>
                   Deny
                 </button>
               </div>
             </div>
           ))
         ) : (
-          <p>No redemption requests awaiting review.</p>
+          <p className="gw-empty-state">No redemption requests awaiting review.</p>
         )}
       </section>
 
       <section className="gw-panel">
-        <h2>Charging Hubs</h2>
+        <div className="gw-section-label">
+          <h2>Charging Hubs</h2>
+          <span>{seedChargingHubs.length} candidate locations</span>
+        </div>
         <p>Candidate partner and institution-operated locations.</p>
-        <ul>
+        <div className="gw-hub-grid">
           {seedChargingHubs.map((hub) => (
-            <li key={hub.id}>
-              {hub.name} · {hub.network} · {hub.stalls} stalls · <Tag tone="neutral">{hub.status}</Tag>
-            </li>
+            <div className="gw-hub-card" key={hub.id}>
+              <span className="gw-hub-name">{hub.name}</span>
+              <span className="gw-hub-meta">{hub.network} · {hub.city}</span>
+              <div className="gw-hub-foot">
+                <span className="gw-hub-connectors">{hub.stalls} stalls · {hub.connectorTypes.join(", ")}</span>
+                <Tag tone="neutral">{hub.status}</Tag>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       </section>
     </div>
   );

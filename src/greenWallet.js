@@ -33,8 +33,15 @@ export const seedRedemptionRequests = [
   { id: requestId(2), creditId: creditId(3), participantId: 'participant-demo-03', chargingHubId: 'hub-pasadena-city-hall', requestedUnits: 20, unitLabel: 'Green Route Credits', status: REDEMPTION_STATUSES.fulfilled, requestedAt: '2026-08-08T12:00:00Z', reviewedAt: '2026-08-09T12:00:00Z', reviewedBy: 'demo-program-admin', reviewNote: 'Synthetic research-beta fulfillment.' },
 ];
 
-export function walletBalance(credits, participantId) {
-  return credits.filter((c) => c.participantId === participantId && c.status === CREDIT_STATUSES.issued).reduce((sum, c) => sum + c.amountUnits, 0);
+export function walletBalance(credits, participantId, requests = []) {
+  const unavailableCreditIds = new Set(
+    requests
+      .filter((request) => request.status !== REDEMPTION_STATUSES.denied)
+      .map((request) => request.creditId),
+  );
+  return credits
+    .filter((credit) => credit.participantId === participantId && credit.status === CREDIT_STATUSES.issued && !unavailableCreditIds.has(credit.id))
+    .reduce((sum, credit) => sum + credit.amountUnits, 0);
 }
 
 // Fixture helpers mimic commands sent to the canonical backend. They are for

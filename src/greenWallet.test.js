@@ -32,11 +32,22 @@ test('fixtures use canonical lowercase machine vocabularies', () => {
 
 test('wallet balance includes only issued credit units', () => {
   const credits = [
-    { participantId: 'p1', amountUnits: 5, status: CREDIT_STATUSES.issued },
-    { participantId: 'p1', amountUnits: 7, status: CREDIT_STATUSES.redeemed },
-    { participantId: 'p2', amountUnits: 9, status: CREDIT_STATUSES.issued },
+    { id: 'c1', participantId: 'p1', amountUnits: 5, status: CREDIT_STATUSES.issued },
+    { id: 'c2', participantId: 'p1', amountUnits: 7, status: CREDIT_STATUSES.redeemed },
+    { id: 'c3', participantId: 'p2', amountUnits: 9, status: CREDIT_STATUSES.issued },
   ];
   assert.equal(walletBalance(credits, 'p1'), 5);
+});
+
+test('wallet balance excludes credits tied to non-denied redemption requests', () => {
+  const credits = [
+    { id: 'c1', participantId: 'p1', amountUnits: 5, status: CREDIT_STATUSES.issued },
+    { id: 'c2', participantId: 'p1', amountUnits: 7, status: CREDIT_STATUSES.issued },
+  ];
+  const requested = [{ creditId: 'c1', status: REDEMPTION_STATUSES.requested }];
+  const denied = [{ creditId: 'c1', status: REDEMPTION_STATUSES.denied }];
+  assert.equal(walletBalance(credits, 'p1', requested), 7);
+  assert.equal(walletBalance(credits, 'p1', denied), 12);
 });
 
 test('redemption request is separate from credit issuance and starts requested', () => {

@@ -55,6 +55,7 @@ export function rollbackLastMigration(db) {
   const sql = readFileSync(join(MIGRATIONS_DIR, downFile), 'utf8');
   db.exec('BEGIN IMMEDIATE');
   try {
+    db.prepare('DELETE FROM schema_migrations WHERE id = ?').run(last.id);
     db.exec(sql);
     db.exec('COMMIT');
   } catch (error) {

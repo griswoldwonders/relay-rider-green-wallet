@@ -4,10 +4,11 @@ Status: Superseded in this repository by the Manual Pasadena Charging-Benefit
 Pilot (`docs/PASADENA_PILOT.md`, `shared/contract.js`, `server/pilotService.js`).
 Historical reference-client language below is retained for traceability.
 
-The Django backend in `griswoldwonders/relay-rider-beta-001` remains a related
-Relay Rider system. This repository now carries the authoritative SQLite/Node
-implementation of the Pasadena manual pilot contract and must not invent a
-second credit-balance formula in the frontend.
+The Django backend in `griswoldwonders/relay-rider-beta-001` remains the
+commute / institution system of record and AQMD feed producer. The AQMD module
+(`griswoldwonders/aqmd-module-tool`) consumes that feed for Rule 2202 analysis.
+This repository is the authoritative Pasadena charging-benefit ledger. See
+`docs/COMPANION_INTEGRATION.md`.
 
 ## Summary
 

@@ -56,7 +56,11 @@ test('migrations apply and rollback cleanly', () => {
   const db = openDatabase(':memory:');
   applyMigrations(db);
   assert.ok(db.prepare("SELECT name FROM sqlite_master WHERE name = 'credit_ledger'").get());
-  rollbackLastMigration(db);
+  assert.ok(db.prepare("SELECT name FROM sqlite_master WHERE name = 'companion_identities'").get());
+  assert.equal(rollbackLastMigration(db), '002_companion_bridge.sql');
+  assert.equal(db.prepare("SELECT name FROM sqlite_master WHERE name = 'companion_identities'").get(), undefined);
+  assert.ok(db.prepare("SELECT name FROM sqlite_master WHERE name = 'credit_ledger'").get());
+  assert.equal(rollbackLastMigration(db), '001_pasadena_pilot.sql');
   assert.equal(db.prepare("SELECT name FROM sqlite_master WHERE name = 'credit_ledger'").get(), undefined);
   applyMigrations(db);
   seedDatabase(db);

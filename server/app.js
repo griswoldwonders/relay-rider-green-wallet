@@ -22,6 +22,13 @@ import {
   transitionRedemption,
   updatePilotEffectiveDate,
 } from './pilotService.js';
+import {
+  companionStatus,
+  companionTokenValid,
+  ingestAqmdFeedDocument,
+  ingestPushedCommuteDay,
+  pullRelayRiderAqmdFeed,
+} from './companionBridge.js';
 import { PilotError, newId, nowIso } from './util.js';
 import { USER_ROLES } from '../shared/contract.js';
 
@@ -39,6 +46,11 @@ export function createApp(db, options = {}) {
     const cookies = parseCookies(req.headers.cookie);
     req.sessionId = cookies.pilot_session;
     req.actor = loadSessionUser(db, req.sessionId);
+    const companionToken = req.headers['x-companion-token'];
+    if (!req.actor && companionTokenValid(companionToken)) {
+      req.actor = db.prepare("SELECT * FROM users WHERE role = 'administrator' ORDER BY created_at LIMIT 1").get();
+      req.companionMachine = true;
+    }
     if (!SAFE_METHODS.has(req.method)) {
       const origin = req.headers.origin;
       if (origin) {
@@ -58,7 +70,8 @@ export function createApp(db, options = {}) {
         }
       }
       const csrf = req.headers['x-csrf-token'];
-      if (req.path !== '/api/login' && (!req.actor || csrf !== req.actor.csrf_token)) {
+      const companionOk = req.companionMachine && req.path.startsWith('/api/integrations/');
+      if (req.path !== '/api/login' && !companionOk && (!req.actor || csrf !== req.actor.csrf_token)) {
         return res.status(403).json({ error: 'CSRF' });
       }
     }
@@ -83,6 +96,9 @@ export function createApp(db, options = {}) {
     } catch (error) {
       next(error);
     }
+  };
+  const handleAsync = (fn) => (req, res, next) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
   };
 
   app.get('/api/health', (_req, res) => {
@@ -221,6 +237,21 @@ export function createApp(db, options = {}) {
       return res.send(reportToCsv(report));
     }
     res.json(report);
+  }));
+
+  app.get('/api/admin/companions', requireAuth, requireAdmin, handle((req, res) => {
+    res.json(companionStatus(db));
+  }));
+
+  app.post('/api/admin/companions/relay-rider/ingest-feed', requireAuth, requireAdmin, handleAsync(async (req, res) => {
+    if (req.body?.feed) {
+      return res.json(ingestAqmdFeedDocument(db, req.actor, req.body.feed));
+    }
+    res.json(await pullRelayRiderAqmdFeed(db, req.actor));
+  }));
+
+  app.post('/api/integrations/commute-days', requireAuth, requireAdmin, handle((req, res) => {
+    res.status(201).json(ingestPushedCommuteDay(db, req.actor, req.body || {}));
   }));
 
   app.use((error, _req, res, _next) => {

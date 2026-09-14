@@ -5,8 +5,9 @@ the participant and administrator console. The Node/SQLite backend is the
 authoritative ledger for credits, redemptions, evidence, hub activation, and the
 $500 Common Pathways Technologies sponsor budget.
 
-See `docs/PASADENA_PILOT.md` for operating instructions and `docs/GREEN_WALLET_SPEC.md`
-for terminology that this pilot supersedes where they conflict.
+See `docs/PASADENA_PILOT.md` for operating instructions, `docs/COMPANION_INTEGRATION.md`
+for how this ledger works with Relay Rider beta and the AQMD module, and
+`docs/GREEN_WALLET_SPEC.md` for older terminology that the Pasadena contract supersedes.
 
 Status: research-stage / pre-activation. Seed data is synthetic. Locations are
 independently listed as verified addresses and are **not** active until an

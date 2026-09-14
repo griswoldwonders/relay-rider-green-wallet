@@ -495,8 +495,19 @@ body {
   .gw-secondary-button { flex: 1; }
 }
 
-@media (max-width: 680px) {
-  .gw-request-summary { grid-template-columns: 1fr; }
-  .gw-notice { align-items: flex-start; flex-wrap: wrap; }
-  .gw-notice span { flex-basis: 100%; order: 3; }
+.gw-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.gw-form-row input, .gw-form-row textarea {
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--neutral-soft);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink);
 }
+.gw-checklist { margin-bottom: 1.25rem; text-align: left; }
+.gw-checklist ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.gw-checklist label { display: flex; gap: 0.5rem; align-items: flex-start; font-size: 0.82rem; }
+.gw-report { text-align: left; overflow: auto; max-height: 420px; background: var(--neutral-soft); padding: 1rem; border-radius: 12px; font-size: 0.72rem; }
+#root { width: 100%; max-width: none; text-align: left; border: 0; display: block; min-height: 100svh; }

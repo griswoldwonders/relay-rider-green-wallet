@@ -8,7 +8,7 @@
     "start": "node server/index.js",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node --test src/*.test.js server/*.test.js",
+    "test": "node --test src/*.test.js src/greenRoute/*.test.js server/*.test.js",
     "migrate": "node server/migrate.js",
     "migrate:down": "node server/migrate.js down",
     "preview": "vite preview"

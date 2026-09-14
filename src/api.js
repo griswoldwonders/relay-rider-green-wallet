@@ -51,4 +51,6 @@ export const api = {
   enroll: (id) => request(`/api/admin/participants/${id}/enroll`, { method: 'POST', body: {} }),
   report: (month) => request(`/api/admin/reports/monthly?month=${month}`),
   reportCsvUrl: (month) => `/api/admin/reports/monthly?month=${month}&format=csv`,
+  companions: () => request('/api/admin/companions'),
+  ingestRelayRiderFeed: (feed) => request('/api/admin/companions/relay-rider/ingest-feed', { method: 'POST', body: feed ? { feed } : {} }),
 };

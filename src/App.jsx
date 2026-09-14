@@ -234,6 +234,26 @@ function AdminView({ user, onLogout, onError }) {
       </section>
 
       <section className="gw-panel">
+        <h2>Companion systems</h2>
+        <p>Relay Rider beta holds validated commutes. The AQMD module analyzes Rule 2202. Green Wallet remains the only credit and $500 budget ledger. Rule 2202 output never issues credits.</p>
+        {data.companions && <>
+          <ul className="gw-history-list">
+            {Object.values(data.companions.ownership).map((item) => (
+              <li className="gw-history-row" key={item.id}>
+                <div>
+                  <strong>{item.name}</strong>
+                  <span>Owns: {item.owns.join('; ')}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p>Mapped identities: {data.companions.mappedIdentities} · linked commute evidence: {data.companions.linkedCommuteEvidence}</p>
+          <p>Relay Rider API configured: {data.companions.configured.relayRiderApiBase ? 'yes' : 'no'} · ingest token: {data.companions.configured.ingestTokenConfigured ? 'yes' : 'no'}</p>
+          <button className="gw-secondary-button" type="button" onClick={() => api.ingestRelayRiderFeed().then(reload).catch((err) => onError(err.message))}>Pull Relay Rider AQMD commute feed</button>
+        </>}
+      </section>
+
+      <section className="gw-panel">
         <h2>Monthly reconciliation</h2>
         <div className="gw-form-row">
           <label>Month<input value={month} onChange={(e) => setMonth(e.target.value)} /></label>

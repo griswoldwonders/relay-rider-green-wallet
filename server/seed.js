@@ -108,4 +108,15 @@ export function seedDatabase(db, { password = DEMO_PASSWORD } = {}) {
       insertItem.run(newId('chk'), hub.id, item.key, item.label);
     }
   }
+
+  const identities = [
+    ['cid-a', 'user-participant-a', 'rr-participant-a'],
+    ['cid-b', 'user-participant-b', 'rr-participant-b'],
+  ];
+  const insertIdentity = db.prepare(`INSERT OR IGNORE INTO companion_identities (
+    id, tenant_id, user_id, relay_rider_profile_id, relay_rider_external_id, aqmd_participant_key, created_at
+  ) VALUES (?, 'pasadena-pilot', ?, NULL, ?, ?, ?)`);
+  for (const [id, userId, externalId] of identities) {
+    insertIdentity.run(id, userId, externalId, externalId, created);
+  }
 }

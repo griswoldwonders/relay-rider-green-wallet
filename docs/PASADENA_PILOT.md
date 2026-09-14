@@ -22,6 +22,10 @@ pilot budget is `$500` (`50,000` cents / `50,000` credits).
 The pilot remains disabled until an administrator activates it. Seeded locations are
 `location_verified` and `pending` until the Active Hub Checklist is completed.
 
+Green Wallet works with Relay Rider beta (commutes / AQMD feed) and the AQMD
+module (Rule 2202 analysis). See `docs/COMPANION_INTEGRATION.md`. Those systems
+do not mint charging-benefit credits.
+
 ## Local verification
 
 ```bash

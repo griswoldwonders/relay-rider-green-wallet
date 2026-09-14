@@ -28,6 +28,7 @@ import {
   redemptionOption,
 } from '../shared/contract.js';
 import { withImmediateTransaction } from './db.js';
+import { companionStatus, recordOutboundAward } from './companionBridge.js';
 import { PilotError, fingerprintEvidence, hashSecret, newCorrelationId, newId, nowIso } from './util.js';
 
 function getPilot(db) {
@@ -360,7 +361,9 @@ function evaluateAwardUnsafe(db, actor, chargingEvidenceId) {
     payload: { credits: AWARD_CREDITS, localDate: charging.charging_date },
     correlationId,
   });
-  return db.prepare('SELECT * FROM awards WHERE id = ?').get(awardId);
+  const awarded = db.prepare('SELECT * FROM awards WHERE id = ?').get(awardId);
+  recordOutboundAward(db, awarded);
+  return awarded;
 }
 
 export function qualifyingFailures(db, participant, charging) {
@@ -749,6 +752,7 @@ export function adminDashboard(db, actor) {
     hubs: listHubs(db),
     audit: db.prepare('SELECT * FROM audit_events WHERE tenant_id = ? ORDER BY id DESC LIMIT 100').all(tenantId),
     users: db.prepare('SELECT id, email, role, display_name, tenant_id, enrolled_in_pasadena_pilot, vehicle_eligible_bev FROM users WHERE tenant_id = ? ORDER BY role, email').all(tenantId),
+    companions: companionStatus(db),
   };
 }
 

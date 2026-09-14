@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from './api.js';
+import GreenRouteCredits from './greenRoute/GreenRouteCredits.jsx';
 import './App.css';
 
 function Tag({ children, tone = 'neutral' }) {
@@ -15,6 +16,7 @@ export default function App() {
   const [error, setError] = useState('');
   const [email, setEmail] = useState('rider.a@example.test');
   const [password, setPassword] = useState('pilot-research-beta');
+  const [experience, setExperience] = useState('credits');
 
   useEffect(() => {
     api.session().then(setSession).catch(() => setSession(null));
@@ -39,33 +41,36 @@ export default function App() {
     <div className="green-wallet-app">
       <header className="gw-header">
         <div>
-          <span className="gw-eyebrow">Relay Rider · Manual Pasadena Charging-Benefit Pilot</span>
+          <span className="gw-eyebrow">Relay Rider · Green Route Credits</span>
           <h1>Green Wallet</h1>
-          <p>Research-stage promotional credits administered by Common Pathways Technologies. 100 credits = $1 in eligible charging benefits. This is not cash, wages, or a charger-payment system.</p>
+          <p>Employer-sponsored, verified commute-charging support. The screens below are a demo prototype. The research ledger remains available without replacing this flow.</p>
         </div>
-        <span className="pill-badge">Manual pilot · $500 sponsor budget</span>
+        <span className="pill-badge">Demo prototype · Simulated</span>
       </header>
       {error && <div className="gw-notice" role="alert"><strong>Notice</strong><span>{error}</span><button type="button" onClick={() => setError('')}>Dismiss</button></div>}
-      {!session?.user ? (
+      {experience === 'credits' ? (
+        <GreenRouteCredits onOpenResearchLedger={() => setExperience('ledger')} />
+      ) : !session?.user ? (
         <form className="gw-panel" onSubmit={login}>
-          <h2>Sign in</h2>
-          <p>Demo participants: rider.a@example.test / rider.b@example.test. Administrator: admin@commonpathways.example. Password: pilot-research-beta.</p>
+          <h2>Sign in to the research ledger</h2>
+          <p>The Green Route Credits prototype uses demo data. The research ledger still uses your pilot account. Demo participants: rider.a@example.test / rider.b@example.test. Administrator: admin@commonpathways.example. Password: pilot-research-beta.</p>
           <div className="gw-form-row">
             <label>Email<input value={email} onChange={(e) => setEmail(e.target.value)} /></label>
             <label>Password<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} /></label>
           </div>
           <button className="gw-primary-button" type="submit">Sign in</button>
+          <button className="gw-secondary-button" type="button" onClick={() => setExperience('credits')}>Back to Green Route Credits</button>
         </form>
       ) : session.user.role === 'administrator' ? (
-        <AdminView onLogout={logout} onError={setError} user={session.user} />
+        <AdminView onLogout={logout} onError={setError} user={session.user} onBack={() => setExperience('credits')} />
       ) : (
-        <ParticipantView onLogout={logout} onError={setError} user={session.user} />
+        <ParticipantView onLogout={logout} onError={setError} user={session.user} onBack={() => setExperience('credits')} />
       )}
     </div>
   );
 }
 
-function ParticipantView({ user, onLogout, onError }) {
+function ParticipantView({ user, onLogout, onError, onBack }) {
   const [data, setData] = useState(null);
   const [commute, setCommute] = useState({ commuteDate: '', originZone: '', destination: '', travelMode: 'battery_electric_vehicle' });
   const [charging, setCharging] = useState({ hubId: '', chargingDate: '', startAt: '', energyKwh: '5.0', evidenceSource: 'receipt', sessionIdentifier: '' });
@@ -80,7 +85,7 @@ function ParticipantView({ user, onLogout, onError }) {
 
   return (
     <>
-      <div className="gw-toolbar"><strong>{user.displayName}</strong><button className="gw-secondary-button" type="button" onClick={onLogout}>Sign out</button></div>
+      <div className="gw-toolbar"><strong>{user.displayName}</strong><span className="grc-nav"><button type="button" className="gw-secondary-button" onClick={onBack}>Green Route Credits</button><button className="gw-secondary-button" type="button" onClick={onLogout}>Sign out</button></span></div>
       <section className="gw-grid">
         <article className="gw-card">
           <div className="gw-card-head"><span>Available promotional credits</span><span className="gw-balance">{data.availableCredits}<small>Green Route Credits</small></span></div>
@@ -150,7 +155,7 @@ function ParticipantView({ user, onLogout, onError }) {
   );
 }
 
-function AdminView({ user, onLogout, onError }) {
+function AdminView({ user, onLogout, onError, onBack }) {
   const [data, setData] = useState(null);
   const [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
   const [report, setReport] = useState(null);
@@ -164,7 +169,7 @@ function AdminView({ user, onLogout, onError }) {
 
   return (
     <>
-      <div className="gw-toolbar"><strong>{user.displayName}</strong><button className="gw-secondary-button" type="button" onClick={onLogout}>Sign out</button></div>
+      <div className="gw-toolbar"><strong>{user.displayName}</strong><span className="grc-nav"><button type="button" className="gw-secondary-button" onClick={onBack}>Green Route Credits</button><button className="gw-secondary-button" type="button" onClick={onLogout}>Sign out</button></span></div>
       <section className="gw-panel">
         <h2>Sponsor budget</h2>
         <p>{data.pilot.sponsor_name} · funded {cents(data.budget.funded)} · available {cents(data.budget.available)} · reserved {cents(data.budget.reserved)} · issued {cents(data.budget.issued)} · settled {cents(data.budget.settled)}</p>

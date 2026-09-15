@@ -43,7 +43,7 @@ export default function App() {
         <div>
           <span className="gw-eyebrow">Relay Rider · Green Route Credits</span>
           <h1>Green Wallet</h1>
-          <p>Employer-sponsored, verified commute-charging support. The screens below are a demo prototype. The research ledger remains available without replacing this flow.</p>
+          <p>The product Green Wallet lives in Relay Rider beta-001. This site is the isolated prototype plus the Pasadena research ledger. Demo data / simulated.</p>
         </div>
         <span className="pill-badge">Demo prototype · Simulated</span>
       </header>

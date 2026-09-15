@@ -1,7 +1,13 @@
 # Relay Rider · Green Wallet
 
+**The Green Wallet product UX lives in
+[relay-rider-beta-001](https://github.com/griswoldwonders/relay-rider-beta-001).**
+Open Green Wallet from Home or Profile there (`?screen=wallet`). This repository
+is the Pasadena charging-benefit **research ledger** (Node/SQLite) plus an isolated
+prototype preview of the same Green Route Credits screens.
+
 Standalone **Manual Pasadena Charging-Benefit Pilot** application. The React UI is
-the participant and administrator console. The Node/SQLite backend is the
+an optional console for the research ledger. The Node/SQLite backend is the
 authoritative ledger for credits, redemptions, evidence, hub activation, and the
 $500 Common Pathways Technologies sponsor budget.
 

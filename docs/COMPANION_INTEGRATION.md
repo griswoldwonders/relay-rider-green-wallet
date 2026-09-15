@@ -3,13 +3,15 @@
 Green Wallet does **not** replace
 [relay-rider-beta-001](https://github.com/griswoldwonders/relay-rider-beta-001) or
 [aqmd-module-tool](https://github.com/griswoldwonders/aqmd-module-tool).
-The three systems work together with a hard ownership split.
+The commuter-facing Green Wallet **lives in beta-001**. This repo remains the
+Pasadena charging-benefit research ledger. The three systems work together with a
+hard ownership split.
 
 | System | Owns | Does not own |
 | --- | --- | --- |
-| Relay Rider beta | Institution/membership, validated `CommuterRecord`s, `GET /api/institutions/{id}/aqmd-feed/` (`rr-aqmd-feed-v1`) | Pasadena $500 credit ledger, kWh awards |
+| Relay Rider beta | Institution/membership, validated `CommuterRecord`s, `GET /api/institutions/{id}/aqmd-feed/` (`rr-aqmd-feed-v1`), **in-app Green Wallet UX** | Pasadena $500 credit ledger, kWh awards |
 | AQMD module tool | Rule 2202 / TDM analysis of that feed (`writes_to_beta: false`) | Credit minting, charging sessions, redemptions |
-| Green Wallet | Qualifying-day awards, credit ledger, sponsor budget, charging evidence, hub checklist, $5/$10 redemptions | Rule 2202 certification, beta commute SoR |
+| Green Wallet | Qualifying-day awards, credit ledger, sponsor budget, charging evidence, hub checklist, $5/$10 redemptions | In-app product UX (owned by beta), Rule 2202 certification, beta commute SoR |
 
 ## Data flow
 

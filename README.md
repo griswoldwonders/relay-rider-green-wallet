@@ -15,6 +15,9 @@ See `docs/PASADENA_PILOT.md` for operating instructions, `docs/COMPANION_INTEGRA
 for how this ledger works with Relay Rider beta and the AQMD module, and
 `docs/GREEN_WALLET_SPEC.md` for older terminology that the Pasadena contract supersedes.
 
+To land the in-app wallet on beta-001, apply `integrations/relay-rider-beta-001/`
+(see `APPLY.md` in that folder).
+
 Status: research-stage / pre-activation. Seed data is synthetic. Locations are
 independently listed as verified addresses and are **not** active until an
 administrator completes the Active Hub Checklist.

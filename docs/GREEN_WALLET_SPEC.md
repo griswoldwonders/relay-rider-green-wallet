@@ -1,6 +1,14 @@
 # Green Wallet Reference Client Spec
 
-Status: Prototype / research beta. Evidence label: Synthetic / proposed. Not activated.
+Status: Superseded in this repository by the Manual Pasadena Charging-Benefit
+Pilot (`docs/PASADENA_PILOT.md`, `shared/contract.js`, `server/pilotService.js`).
+Historical reference-client language below is retained for traceability.
+
+The Django backend in `griswoldwonders/relay-rider-beta-001` remains the
+commute / institution system of record and AQMD feed producer. The AQMD module
+(`griswoldwonders/aqmd-module-tool`) consumes that feed for Rule 2202 analysis.
+This repository is the authoritative Pasadena charging-benefit ledger. See
+`docs/COMPANION_INTEGRATION.md`.
 
 ## Summary
 

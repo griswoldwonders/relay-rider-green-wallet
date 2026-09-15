@@ -1,67 +1,51 @@
 # Relay Rider · Green Wallet
 
-Standalone **reference client** for the Green Wallet participant experience.
-It mirrors the canonical Green Wallet contract owned by
-`griswoldwonders/relay-rider-beta-001`; it does not define an independent
-backend, persistence model, payment system, or Charging Intelligence domain.
+**The Green Wallet product UX lives in
+[relay-rider-beta-001](https://github.com/griswoldwonders/relay-rider-beta-001).**
+Open Green Wallet from Home or Profile there (`?screen=wallet`). This repository
+is the Pasadena charging-benefit **research ledger** (Node/SQLite) plus an isolated
+prototype preview of the same Green Route Credits screens.
 
-Status: research beta / pre-pilot prototype. All local fixtures are synthetic
-and non-authoritative. See `docs/GREEN_WALLET_SPEC.md` for the mirrored
-contract, terminology guardrails, and open founder decisions.
+Standalone **Manual Pasadena Charging-Benefit Pilot** application. The React UI is
+an optional console for the research ledger. The Node/SQLite backend is the
+authoritative ledger for credits, redemptions, evidence, hub activation, and the
+$500 Common Pathways Technologies sponsor budget.
 
-## Repository boundary
+See `docs/PASADENA_PILOT.md` for operating instructions, `docs/COMPANION_INTEGRATION.md`
+for how this ledger works with Relay Rider beta and the AQMD module, and
+`docs/GREEN_WALLET_SPEC.md` for older terminology that the Pasadena contract supersedes.
 
-Canonical Green Wallet persistence and business semantics live in the Relay
-Rider Django backend. This repository is limited to participant-facing UX,
-synthetic fixtures, and contract regression tests.
+To land the in-app wallet on beta-001, apply `integrations/relay-rider-beta-001/`
+(see `APPLY.md` in that folder).
 
-It remains intentionally separate from:
+Status: research-stage / pre-activation. Seed data is synthetic. Locations are
+independently listed as verified addresses and are **not** active until an
+administrator completes the Active Hub Checklist.
 
-- `griswoldwonders/CEO-Dashboard` (now `ceo-workbench-v3`) — executive tasks
-  and agenda workflows.
-- `griswoldwonders/common-pathways-relay-rider` — private product and
-  engineering playbook/reference material.
+## Guardrails
 
-## Product guardrails
-
-- Green Route Credits are program-defined promotional or
-  institution-sponsored participation benefits, not currency, fares, wages,
-  guaranteed payments, direct charging reimbursement, or a payment
-  instrument.
-- Credit issuance and redemption requests are separate records.
-- Redemption follows the canonical lifecycle
-  `requested → under-review → fulfilled|denied` and requires administrative
-  review before fulfillment.
-- Charging Hub status machine values are `candidate`, `verified`, and `active`.
-- This prototype does not guarantee charger availability, process payments,
-  start charging sessions, or connect to a live charging network.
-- It does not contain ChargingStation, EVSE, ChargingSession,
-  CreditEligibilityEvent, ProgramBudgetLedger, DecisionCard, or other
-  Charging Intelligence domain entities.
-
-## Getting started
-
-```bash
-npm install
-npm run dev
-```
+- Green Route Credits are promotional accounting units (`100` credits = `$1` of
+  eligible charging benefit). They are not cash, wages, cryptocurrency, stored
+  value, utility credits, or transferable property.
+- Only `$5` (500 credits) and `$10` (1,000 credits) redemptions are allowed.
+- Benefits cannot be obligated beyond the `$500` funded budget.
+- Redemption uses the canonical status machine in `shared/contract.js`.
+- This application does not pay a charger, start a session, or integrate a live network.
 
 ## Scripts
 
-- `npm run dev` — start the Vite dev server.
-- `npm run build` — production build.
-- `npm run lint` — run oxlint.
-- `npm test` — run Green Wallet contract regression tests.
-- `npm run preview` — preview the production build.
+```bash
+npm ci
+npm test
+npm run build
+npm run dev
+```
 
-## Mirrored data contract
+- `npm run dev` — API on `:8787` plus Vite on `:5173`
+- `npm start` — serve API and production `dist/` (run `npm run build` first)
+- `npm run migrate` / `npm run migrate:down` — apply or roll back SQLite migrations
+- `npm test` — contract, ledger, and HTTP isolation tests
+- `npm run lint` — oxlint
+- `npm run build` — production frontend
 
-See `src/greenWallet.js` for synthetic projections of:
-
-- `GreenRouteCredit`
-- `RedemptionRequest`
-- `ChargingHub`
-
-The fixtures and helpers must mirror the canonical Relay Rider API contract.
-They are not a second source of business truth and must not be used as a
-separate persistence layer.
+Demo password: `pilot-research-beta` (see `.env.example`).
